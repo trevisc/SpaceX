@@ -15,7 +15,7 @@ namespace SpaceXInfo.Controllers
     public class SpaceXController : Controller
     {
         private readonly ILogger _logger;
-        readonly private ISpaceXRepository _repo;
+        private readonly ISpaceXRepository _repo;
 
         public SpaceXController(ISpaceXRepository repo, ILoggerFactory logger)
         {
@@ -25,14 +25,14 @@ namespace SpaceXInfo.Controllers
 
         [HttpGet]
         [Route("GetLaunchPadInfo")]
-        public async Task<IEnumerable<LaunchPad>> Get()
+        public async Task<ActionResult> Get()
         {
-           var results = await _repo.GetLaunchPadInfoAsync();
+            IEnumerable<LaunchPad> results = await _repo.GetLaunchPadInfoAsync().ConfigureAwait(true);
             if(results == null)
             {
                 _logger.LogError("No results found in GetLaunchPadInfo");
             }
-            return results;        
+           return View("~/Views/LaunchPads.cshtml", results);
         }
         
         [HttpGet]

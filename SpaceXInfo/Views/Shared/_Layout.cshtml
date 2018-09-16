@@ -1,0 +1,16 @@
+﻿ <!DOCTYPE html>
+ <link rel="stylesheet" href="~/lib/css/bootstrap.css" />
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+    <script></script>
+</body>
+</html>

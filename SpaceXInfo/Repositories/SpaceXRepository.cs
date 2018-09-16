@@ -1,8 +1,6 @@
 ﻿using SpaceXInfo.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
@@ -11,12 +9,14 @@ namespace SpaceXInfo.Repositories
 {
     public class SpaceXRepository : ISpaceXRepository
     {
+        private const string SpaceXUriString = "http://api.spacexdata.com";
+
         public async Task<IEnumerable<LaunchPad>> GetLaunchPadInfoAsync()
         {
             IList<LaunchPad> lpList;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://api.spacexdata.com");
+                client.BaseAddress = new Uri(SpaceXUriString);
                 var response = await client.GetAsync($"/v2/launchpads");
                 response.EnsureSuccessStatusCode();
                 var stringResult = await response.Content.ReadAsStringAsync();
@@ -36,7 +36,7 @@ namespace SpaceXInfo.Repositories
             LaunchPad lp;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://api.spacexdata.com");
+                client.BaseAddress = new Uri(SpaceXUriString);
                 var response = await client.GetAsync($"/v2/launchpads/{padname}");
                 response.EnsureSuccessStatusCode();
                 var stringResult = await response.Content.ReadAsStringAsync();

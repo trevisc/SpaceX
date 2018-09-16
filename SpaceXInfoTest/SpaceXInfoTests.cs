@@ -11,16 +11,14 @@ namespace SpaceXInfoTest
     [TestClass]
     public class SpaceXInfoTests 
     {    
-        private readonly ISpaceXRepository repo = new SpaceXRepository();
-        private readonly ILoggerFactory logger = new LoggerFactory();
+        private readonly ISpaceXRepository _repo = new SpaceXRepository();
+        private readonly ILoggerFactory _logger = new LoggerFactory();
 
 
         [TestMethod]
         public async Task TestGetSuccess()
         {        
-
-            SpaceXController spx = new SpaceXController(repo, logger);
-            IEnumerable<LaunchPad> pads = await spx.Get();
+            IEnumerable<LaunchPad> pads = await _repo.GetLaunchPadInfoAsync().ConfigureAwait(true);
             bool hasValue = false;
             foreach(var p in pads)
             {
@@ -33,7 +31,7 @@ namespace SpaceXInfoTest
         public async Task TestGetByLaunchNameSuccess()
         {
             string launchPadName = "ksc_lc_39a";
-            SpaceXController spx = new SpaceXController(repo, logger);
+            SpaceXController spx = new SpaceXController(_repo, _logger);
             LaunchPad pad = await spx.Get(launchPadName);           
             Assert.IsTrue(pad.Id == launchPadName);
         }
@@ -42,7 +40,7 @@ namespace SpaceXInfoTest
         public async Task TestGetByLaunchNameFailure()
         {
             string launchPadName = "area_51";
-            SpaceXController spx = new SpaceXController(repo, logger);
+            SpaceXController spx = new SpaceXController(_repo, _logger);
             LaunchPad pad = await spx.Get(launchPadName);
             Assert.IsFalse(pad.Id == launchPadName);
         }
